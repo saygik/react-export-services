@@ -1,10 +1,11 @@
 import React from 'react'
 import {Container} from 'react-bootstrap'
 import DataState from './data'
-import {MainPage} from './pages'
+import {MainPage, TablePage2} from './pages'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './app.css'
-
+import 'devextreme/dist/css/dx.common.css'
+import 'devextreme/dist/css/dx.carmine.css'
 function App() {
   return (
       <DataState>
@@ -13,6 +14,7 @@ function App() {
               <div className={'pb-0'}><h4>Экспорт услуг</h4></div>
               <div className={'app'}>
                   <MainPage/>
+                    <TablePage2/>
               </div>
           </Container>
       </DataState>

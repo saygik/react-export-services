@@ -1,9 +1,3 @@
-import {
-    DataProvider,
-    DataConsumer
-} from './data-context'
+import dateContext from './data-context'
 
-export {
-    DataProvider,
-    DataConsumer
-}
+export default dateContext

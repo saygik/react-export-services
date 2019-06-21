@@ -1,2 +1,4 @@
 import MainPage from './main-page'
-export {MainPage}
+import TablePage from './table-page'
+import TablePage2 from './table-page2'
+export {MainPage, TablePage, TablePage2}

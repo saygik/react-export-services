@@ -1,51 +1,54 @@
-import React, {Component} from 'react'
+import React, {useState, useEffect} from 'react'
 import moment from 'moment'
-import {DataProvider} from '../context/index'
-import {fetchPeriod} from '../../services/api'
+import DateContext from '../context/index'
+import {getData, setData} from '../../services/api'
 
-class DataState extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            appData: {
-                date: {year: 2013, month:1},
-                data:[]
-            }
-        }
-        this.updateDate = date  =>this.setAppDataState({date: date})
+const DataState = ({children}) => {
+
+    const updateDate = date  => setAppDataState({date: date})
+    const updateData = async  row  => {
+        return await setData(row)
     }
 
-    setAppDataState(property) {
-        this.setState(prevState => ({
-            appData: {
-                ...prevState.appData,
+    const setAppDataState = (property)=> {
+        UpdateState(prevState => ({
+                ...prevState,
                 ...property
-            }
         }))
     }
-    componentDidUpdate(prevProps,prevState) {
-        if (this.state.appData && this.state.appData.date!==prevState.appData.date) {
-            fetchPeriod(this.state.appData.date).then(data=>{
-                if (data && data.fetchOK) {
-                    this.setAppDataState({data: data.data})
-                }
+    const DataState = {
+        updateDate,
+        updateData,
+        date: {year: moment().year(), month:moment().month()+1},
+        data: []
+    }
 
+    const [appData, UpdateState] = useState(DataState)
+
+
+    useEffect(() => {
+        getData(appData.date)
+            .then (data =>  {
+                setAppDataState({data:data.data})
             })
-        }
-    }
-    componentDidMount() {
-        this.setAppDataState({date: {year: moment().year(), month:moment().month()+1}})
+            .catch(error    =>   {
+                console.log('-err-',error )
+                return {fetchOK: false, msg: error}
+            })
 
-    }
 
-    render() {
-        const { updateDate } = this;
-        const { appData } = this.state;
-        return (
-            <DataProvider value={{appData, updateDate}} >
-                {this.props.children}
-            </DataProvider>        )
-    }
+                // fetchPeriod(appData.date).then(data=>{
+                //     if (data && data.fetchOK) {
+                //         setAppDataState({data: data.data})
+                //     }
+                // })
+
+    }, [appData.date])
+
+    return (
+            <DateContext.Provider value={appData} >
+                {children}
+            </DateContext.Provider>
+    )
 }
-
 export default DataState

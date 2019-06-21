@@ -1,11 +1,13 @@
 import React from 'react';
 
-const {
-    Provider: DataProvider,
-    Consumer: DataConsumer
-} = React.createContext();
+const DateContext = React.createContext({
+    updateDate: () => {},
+    updateData: () => {},
+    date: {year: 2013, month:1},
+    data:[]
+    })
 
-export {
-    DataProvider,
-    DataConsumer
-};
+export default DateContext
+
+
+

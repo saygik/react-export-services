@@ -1,23 +1,14 @@
-import React, {Component} from 'react'
-import {DataConsumer} from '../context'
+import React, {useContext} from 'react'
 import MonthPicker from '../monthpicker'
+import DateContext from '../context'
 
-
-class MainPage extends Component {
-    render() {
+const MainPage =() => {
+    const {date, updateDate} = useContext(DateContext)
         return (
             <div>
-                <DataConsumer>
-                    { (data) =>
-                        <div>
-                            <MonthPicker date={data.appData.date} updateDate={data.updateDate}/>
-                        </div>
-                    }
-                </DataConsumer>
-
+                  <MonthPicker date={date} updateDate={updateDate}/>
             </div>
         )
-    }
 }
 
 

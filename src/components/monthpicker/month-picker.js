@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import Picker from 'react-month-picker'
 import MonthBox from './month-box'
 import 'react-month-picker/css/month-picker.css'
-
+import moment from 'moment'
 
 
 class MonthPicker extends Component {
@@ -23,7 +23,7 @@ class MonthPicker extends Component {
         return (
             <Picker
                 ref="pickAMonth"
-                years={{min: 2013}}
+                years={{min: 2013,  max: moment().year()+1}}
                 value={date}
                 lang={pickerLang.months}
                 onChange={()=>this.refs.pickAMonth.dismiss()}

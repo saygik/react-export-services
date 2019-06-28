@@ -1,52 +1,64 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useMemo} from 'react'
 import moment from 'moment'
 import DateContext from '../context/index'
 import {getData, setData} from '../../services/api'
 
 const DataState = ({children}) => {
 
-    const updateDate = date  => setAppDataState({date: date})
+    const updateDate = date  => {
+        updateCurrentDate(date)
+    }
     const updateData = async  row  => {
         return await setData(row)
     }
 
-    const setAppDataState = (property)=> {
-        UpdateState(prevState => ({
-                ...prevState,
-                ...property
-        }))
-    }
-    const DataState = {
-        updateDate,
-        updateData,
-        date: {year: moment().year(), month:moment().month()+1},
-        data: []
-    }
 
-    const [appData, UpdateState] = useState(DataState)
+
+    const [appDate, updateCurrentDate] = useState({year: moment().year(), month:moment().month()+1})
+    const [appData, updateAppData] = useState([])
+    const [loading, updateLoading] = useState(false)
+//    const [dataServices, updateDataServices] = useState({})
+
+
+    const dataServicesCalculate = data => {
+        let tempDataServices={}
+        data.map(item=>{
+            if (!tempDataServices[item.GroupNumber]) {
+                tempDataServices[item.GroupNumber]=item.groupName
+            }
+            return 0
+        })
+     return tempDataServices
+    }
+    const dataServices = useMemo(() => dataServicesCalculate(appData), [appData]);
+
+
+    const DataState = {
+        date:appDate,
+        updateDate,
+        data:appData,
+        updateData,
+        loading: loading,
+        dataServices: dataServices
+    }
 
 
     useEffect(() => {
-        getData(appData.date)
-            .then (data =>  {
-                setAppDataState({data:data.data})
-            })
-            .catch(error    =>   {
-                console.log('-err-',error )
-                return {fetchOK: false, msg: error}
-            })
-
-
-                // fetchPeriod(appData.date).then(data=>{
-                //     if (data && data.fetchOK) {
-                //         setAppDataState({data: data.data})
-                //     }
-                // })
-
-    }, [appData.date])
+            updateLoading(true)
+            getData(appDate)
+                .then (data =>  {
+                    updateLoading(false)
+                    updateAppData(data.data)
+                })
+                .catch(error    =>   {
+                    console.log('-err-',error )
+                    updateLoading(false)
+                    updateAppData([])
+                })
+    }, [appDate])
 
     return (
-            <DateContext.Provider value={appData} >
+            <DateContext.Provider value={DataState} >
                 {children}
             </DateContext.Provider>
     )

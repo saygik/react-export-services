@@ -1,10 +1,12 @@
 import React from 'react';
 
 const DateContext = React.createContext({
-    updateDate: () => {},
-    updateData: () => {},
     date: {year: 2013, month:1},
-    data:[]
+    updateDate: () => {},
+    data:[],
+    updateData: () => {},
+    loading: false,
+    dataServices:{}
     })
 
 export default DateContext

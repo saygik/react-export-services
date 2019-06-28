@@ -2,10 +2,10 @@ import React, {useContext} from 'react'
 import DateContext from '../context'
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
-
+import { LoadPanel } from 'devextreme-react/load-panel';
 const TablePage=() => {
-    const {data } = useContext(DateContext)
-    console.log('-data-', data)
+    const {data,loading} = useContext(DateContext)
+    const position = { of: '#employee' }
     let expandedRow={}
     const expandedDataLen=[...new Set(data.map(item=>item.groupName))].length
     for (var i = 0; i < expandedDataLen; i++) {
@@ -41,6 +41,17 @@ const TablePage=() => {
     } ]
     return (
         <div>
+            <div id={'employee'}>
+                <LoadPanel
+                    shadingColor={'rgba(0,0,0,0.4)'}
+                    position={position}
+                    visible={loading}
+                    showIndicator={true}
+                    shading={true}
+                    showPane={true}
+                    closeOnOutsideClick={false}
+                />
+            </div>
             <ReactTable
                 data={data}
                 columns={columns}

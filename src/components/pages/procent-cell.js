@@ -9,7 +9,7 @@ export default function ProcentCell(cellData) {
     return (
         calculatedProc && cellData.data['value']!==0 && cellData.data['plan']!==0
         ? <div className={calculatedProc > 99 ? 'inc' : 'dec'}>
-            <div className={'diff'}>{Math.abs(calculatedProc-100)}</div>
+            <div className={'diff'}>{Math.abs(calculatedProc)}</div>
         </div>
         : <div></div>
 
